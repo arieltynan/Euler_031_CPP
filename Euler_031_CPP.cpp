@@ -1,5 +1,6 @@
 // Euler_031_CPP.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// Coin Sum
+// How many different ways can £2 be made using any number of coins?
 
 #include <iostream>
 #include <vector>
@@ -10,91 +11,42 @@ using namespace std;
 int main()
 {
     int bal = 200;
-    int p1 = 1; //index 0 in arr
-    int p2 = 2; //index 1 in arr
-    int p5 = 5; //index 2 in arr
-    int p10 = 10; //index 3 in arr
-    int p20 = 20; //index 4 in arr
-    int p50 = 50; //index 5 in arr
-    int p100 = 100; //index 6 in arr
-    int p200 = 200; //index 7 in arr
+    vector <vector<int>> v;
+    int arr[8] = { 1, 2, 5, 10, 20, 50, 100, 200 };
+    for (int i = 0; i < 8; i++)
+    {
+        vector<int> tempVect;
+        for (int j = 0; j < bal + 1; j++)
+        {
+            if (j % arr[i] == 0)
+                tempVect.push_back(j);
+        }
+        v.push_back(tempVect);
+    }
 
     int sols = 0;
-
-    vector <vector<int>> fullVect;
-    vector<int> tempVect(8,0); //represent counts of each coin //vector size 6, all zeroes
-   // while(bal > 0 && count(fullVect.begin(), fullVect.end(), tempVect) == 0)
-     //   if ()
-    for (int a = 0; a <= bal / p1; a++)
+    
+    for (int a = 0; a < v[0].size(); a++) // 1 cent
     {
-        aLoop:
-        if (a * p1 == 200)
+        for (int b = 0; b < v[1].size() - a/2; b++) // 2 cent
         {
-            sols++;
-            goto enditall;
-        }
-
-        for (int b = 0; b <= bal / p2; b++)
-        {
-            bLoop:
-            if (a * p1 + b* p2 == 200)
+            for (int c = 0; c < v[2].size() - 2*b/5 - a/5; c++) // 5 cent
             {
-                sols++;
-                goto aLoop;
-            }
-
-            for (int c = 0; a <= bal / p5; c++)
-            {
-                cLoop:
-                if (a * p1 + b * p2 + c * p5 == 200)
+                for (int d = 0; d < v[3].size() - c/2 - b/5 - a/10; d++) // 10 cent
                 {
-                    sols++;
-                    goto bLoop;
-                }
-
-                for (int d = 0; d <= bal / 10; d++)
-                {
-                    dLoop:
-                    if (a * p1 + b * p2 + c * p5 + d * p10 == 200)
+                    for (int e = 0; e < v[4].size() - d/2 - c/4 - b/10 - a/20; e++) // 20 cent
                     {
-                        sols++;
-                        goto cLoop;
-                    }
-
-                    for (int e = 0; e <= bal / 20; e++)
-                    {
-                        eLoop:
-                        if (a * p1 + b * p2 + c * p5 + d * p10 + e * p20 == 200)
+                        for (int f = 0; f < v[5].size() - 2*e/5 - d/5 - c/10 - b/25 - a/50; f++) // 50 cent
                         {
-                            sols++;
-                            goto dLoop;
-                        }
-
-                        for (int f = 0; f <= bal / 50; f++)
-                        {
-                            fLoop:
-                            if (a * p1 + b * p2 + c * p5 + d * p10 + e * p20  + f * p50 == 200)
+                            for (int g = 0; g < v[6].size() - f/2 - e/5 - d/10 - c/20 - b/50 - a/100 ; g++) // 100 cent
                             {
-                                sols++;
-                                goto eLoop;
-                            }
-
-                            for (int g = 0; g <= bal / 100; g++)
-                            {
-                                gLoop:
-                                if (a * p1 + b * p2 + c * p5 + d * p10 + e * p20 + f * p50 + g * p100 == 200)
+                                for (int h = 0; h < v[7].size() - g/2 - f/4 - e/10 - d/20 - c/40 - b/100 - a/200 ; h++) // 200 cent
                                 {
-                                    sols++;
-                                    goto fLoop;
-                                }
-
-                                for (int h = 0; h <= bal / 200; h++)
-                                {
-                                    if (a * p1 + b * p2 + c * p5 + d * p10 + e * p20 + f * p50 + g * p100 + h * p200 == 200)
+                                    if (v[0][a] + v[1][b] + v[2][c] + v[3][d] + v[4][e]  + v[5][f]  + v[6][g] + v[7][h]  == 200)
                                     {
                                         sols++;
-                                        cout << sols << endl;
-                                        goto gLoop;
+                                        //cout << sols << " ";
+                                        //cout << "p1: " << a << "| p2: " << b << "| p5: " << c << "| p10: " << d << "| p20: " << e << "| p50: " << f << "| p100: " << g << "| p200: " << h << endl;
                                     }
                                 } //for loop p200
                             } //for loop p100
@@ -104,19 +56,6 @@ int main()
             } //for loop p5
         } //for loop p2
     } //for loop p1
-    enditall:
+
     cout << sols << endl;
 }
-
-
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
